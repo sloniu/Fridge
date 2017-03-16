@@ -57,7 +57,6 @@
 
         </controls:PageHeader>
         <GridView x:Name="Products" RelativePanel.Below="pageHeader" IsItemClickEnabled="True"  ItemsSource="{Binding Products, UpdateSourceTrigger=PropertyChanged}"
-                    ItemClick="{x:Bind ViewModel.ClickCommand}"
                     SelectedItem="{Binding SelectedProduct, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     Margin="5">
             <GridView.ItemTemplate>
