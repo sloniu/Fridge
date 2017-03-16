@@ -1,0 +1,119 @@
+﻿<Page x:Class="Template10Test.Views.BuildsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Behaviors="using:Template10.Behaviors"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewModels="using:Template10Test.ViewModels"
+      mc:Ignorable="d"
+      x:Name="Page">
+
+    <Page.DataContext>
+        <viewModels:BuildsPageViewModel x:Name="ViewModel" />
+
+    </Page.DataContext>
+
+    <RelativePanel x:Name="RelativePanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for narrow view  -->
+                        <!--                        <Setter Target="stateTextBox.Text" Value="Narrow Visual State" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for normal view  -->
+                        <!--                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for wide view  -->
+                        <!--                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />-->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" Text="Streams you follow">
+
+            <!--  secondary commands  -->
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
+            </controls:PageHeader.SecondaryCommands>
+
+        </controls:PageHeader>
+
+        <StackPanel x:Name="StackPanel1" RelativePanel.Below="pageHeader" Margin="30" Orientation="Horizontal">
+            <StackPanel>
+                <TextBlock Text="Summoner Name" Height="32"/>
+                <TextBlock Text="Region" Height="32"></TextBlock>
+                <TextBlock Text="" Height="32"></TextBlock>
+                <TextBlock Text="Match ID" Height="32"></TextBlock>
+            </StackPanel>
+            <StackPanel>
+                <TextBox x:Name="PlayerNameTextBox" Text="{x:Bind ViewModel.PlayerName, Mode=TwoWay}" ></TextBox>
+<!--                <TextBox x:Name="RegionTextBox" Text="{x:Bind ViewModel.Region, Mode=TwoWay}" ></TextBox>-->
+                <ComboBox x:Name="RegionComboBox" DisplayMemberPath="Name"  ItemsSource="{x:Bind ViewModel.RegionOptions}"  SelectedItem="{Binding Region, Mode=TwoWay}"/>
+                <Button x:Name="FetchBuildsButton" Click="{x:Bind ViewModel.FetchBuilds}" Content="Get Last Match ID" ></Button>
+                <TextBox x:Name="BuildsTextBlock" Text="{x:Bind ViewModel.Builds, Mode=TwoWay}" ></TextBox>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="// Przykładowe dane: Name: 'lose is improve' Region: 'North America'" Foreground="Green" Height="32"/>
+                <TextBlock Text="// Przykładowe dane: Name: 'sloniu666' Region: 'Europe West'" Foreground="Green" Height="32"/>
+                <TextBlock Text="// Po wciśnięciu przycisku należy poczekać (leci asynchronicznie by nie blokować UI)" Foreground="Green" Height="32"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel RelativePanel.Below="StackPanel1" Margin="30" Orientation="Horizontal">
+            <StackPanel>
+                <TextBlock Text="Summoner Name" Height="32"></TextBlock>
+                <TextBlock Text="Region" Height="32"></TextBlock>
+                <TextBlock Text="Match ID" Height="32"></TextBlock>
+            </StackPanel>
+            <StackPanel>
+                <TextBox x:Name="PlayerNameTextBox2" Text="{x:Bind ViewModel.PlayerName, Mode=TwoWay}" Width="300"></TextBox>
+<!--                <TextBox x:Name="RegionTextBox2" Text="{x:Bind ViewModel.Region, Mode=TwoWay}" Width="300"></TextBox>-->
+                <ComboBox x:Name="RegionComboBox2" DisplayMemberPath="Name"  ItemsSource="{x:Bind ViewModel.RegionOptions}"  SelectedItem="{Binding Region, Mode=TwoWay}"/>
+
+                <TextBox x:Name="MatchIdTextBox" Text="{x:Bind ViewModel.MatchId, Mode=TwoWay}" Width="300"></TextBox>
+                <Button Click="{x:Bind ViewModel.PushBuild}" Content="Push build"></Button>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="// Dane przepisują się same (dla testów)" Foreground="Green" Height="32"/>
+                <TextBlock Text="" Height="32"></TextBlock>
+                <TextBlock Text="// Proszę skopiować dane z pola Match ID tutaj" Foreground="Green" Height="32"/>
+                <TextBlock Text="// Po wciśnięciu przycisku należy poczekać (leci asynchronicznie by nie blokować UI)" Foreground="Green" Height="32"/>
+                <TextBlock Text="// Dane dodadzą się do DB jeżeli jesteśmy zalogowani" Foreground="Green" Height="32"/>
+                <TextBlock Text="// Dane do logowania:" Foreground="Green" Height="32"/>
+                <TextBlock Text="// Login: pipdprojekt Hasło: Projekt123" Foreground="Green" Height="32"/>
+                <TextBlock Text="// Przycisk Login znajduje się na stronie głównej (na dole)" Foreground="Green" Height="32"/>
+
+            </StackPanel>
+        </StackPanel>
+
+
+    </RelativePanel>
+
+</Page>
+
+
+

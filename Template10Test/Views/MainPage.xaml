@@ -1,0 +1,189 @@
+<Page x:Class="Template10Test.Views.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Behaviors="using:Template10.Behaviors"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewModels="using:Template10Test.ViewModels"
+      mc:Ignorable="d"
+      x:Name="Page">
+
+    <Page.DataContext>
+        <viewModels:MainPageViewModel x:Name="ViewModel" />
+        
+    </Page.DataContext>
+    
+
+    <RelativePanel x:Name="RelativePanel" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for narrow view  -->
+<!--                        <Setter Target="stateTextBox.Text" Value="Narrow Visual State" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for normal view  -->
+<!--                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for wide view  -->
+<!--                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />-->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True" Text="Streams you follow">
+
+            <!--  secondary commands  -->
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
+            </controls:PageHeader.SecondaryCommands>
+
+        </controls:PageHeader>
+
+        <Grid x:Name="thisGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.Below="pageHeader" Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <GridView x:Name="thisGridView" IsItemClickEnabled="True"  ItemsSource="{Binding Streamers, UpdateSourceTrigger=PropertyChanged}"
+                      ItemClick="{x:Bind ViewModel.ClickCommand}"
+                      SelectedItem="{Binding SelectedStreamer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Grid.Row="0">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            
+                            <StackPanel RightTapped="UIElement_OnRightTapped">
+                                <Image Source="{Binding Logo, UpdateSourceTrigger=PropertyChanged}" Width="150" Height="150" />
+                                <TextBlock x:Name="asdf" Text="{Binding DisplayName, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="RightTapped">
+                                        <Behaviors:OpenFlyoutAction />
+                                    </Core:EventTriggerBehavior>
+                                    <Core:EventTriggerBehavior EventName="Holding">
+                                        <Behaviors:OpenFlyoutAction />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+
+                                <FlyoutBase.AttachedFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem x:Name="DeleteButton" Text="Delete"
+                                                    Command="{Binding ElementName=Page, Path=DataContext.DeleteSelectedStreamer}" />
+                                    </MenuFlyout>
+                                </FlyoutBase.AttachedFlyout>
+                            </StackPanel>
+<!--                            TODO: fix display of online/offline -->
+                                <TextBlock Text="{Binding State, Mode=TwoWay}" HorizontalAlignment="Right" Foreground="Red"/>
+
+                        </Grid>
+                        
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+            <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <TextBox x:Name="AddStreamerTextBox" Text="{Binding AddStreamer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                <Button x:Name="AddStreamerButton" Content="Add streamer" Margin="5" Click="{x:Bind ViewModel.AddStreamerButton}"/>
+                <Button x:Name="LoadStreamers" Content="LoadStreamers" Margin="5" Click="{x:Bind ViewModel.LoadStreamers}"/>
+                <Button x:Name="RefreshStreamers" Content="Refresh streamers" Margin="5" Click="{x:Bind ViewModel.RefreshStreamers}"/>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="2">
+                <Button x:Name="Register" Content="Register" Margin="5" Click="{x:Bind ViewModel.Register}"/>
+                <Button x:Name="Unregister" Content="Unregister" Margin="5" Click="{x:Bind ViewModel.Unregister}"/>
+                <Button Content="Login" Click="{x:Bind ViewModel.Login}"/>
+                <Button Content="ResetSettings" Click="{x:Bind ViewModel.OnResetSettings}"/>
+            </StackPanel>
+
+        </Grid>
+
+    </RelativePanel>
+</Page>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
