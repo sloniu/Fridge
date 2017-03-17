@@ -8,16 +8,12 @@ using System.Threading.Tasks;
 
 namespace Template10Test.Models.Fridge
 {
-    class Recipe
+    class FridgeProduct
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RecipeId { get; set; }
+        public int ProductId { get; set; }
         public string Name { get; set; }
-        public string RecipeText { get; set; }
-
-        public List<Ingredient> Ingredients { get; set; }
+        public double Size { get; set; }
     }
-
-
 }

@@ -1,6 +1,7 @@
 using Windows.UI.Xaml.Controls;
 using Template10.Controls;
 using Template10.Services.NavigationService;
+using Microsoft.EntityFrameworkCore;
 
 namespace Template10Test.Views
 {
@@ -13,6 +14,7 @@ namespace Template10Test.Views
         {
             Instance = this;
             InitializeComponent();
+
         }
 
         public Shell(INavigationService navigationService) : this()

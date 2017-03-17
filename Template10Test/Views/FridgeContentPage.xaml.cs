@@ -30,7 +30,7 @@ namespace Template10Test.Views
 
         private void UIElement_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            var selectedItem = ((StackPanel)sender).DataContext as Product;
+            var selectedItem = ((StackPanel)sender).DataContext as FridgeProduct;
             this.FridgeContent.SelectedItem = selectedItem;
             //throw new NotImplementedException();
         }

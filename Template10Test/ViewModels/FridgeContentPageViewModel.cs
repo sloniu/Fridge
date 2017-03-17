@@ -18,33 +18,17 @@ namespace Template10Test.ViewModels
     {
         public FridgeContentPageViewModel()
         {
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                Value = "Designtime value";
-            }
-
             DeleteSelectedProduct = new DelegateCommand<object>(OnDeleteSelectedProduct, CanDeleteSelectedProduct);
 
-            Products = new ObservableCollection<Product>()
+            using (var db = new RecipeContext())
             {
-                new Product() { Name = "Mleko" },
-                new Product() { Name = "Pomidor" },
-                new Product() { Name = "Masło" },
-                new Product() { Name = "Ser żółty" },
-            };
+                Products = db.FridgeProducts.ToList();
+            }
         }
 
-        string _Value = "Gas";
+        private FridgeProduct _selectedProduct;
 
-        public string Value
-        {
-            get { return _Value; }
-            set { Set(ref _Value, value); }
-        }
-
-        private Product _selectedProduct;
-
-        public Product SelectedProduct
+        public FridgeProduct SelectedProduct
         {
             get { return _selectedProduct; }
             set
@@ -54,9 +38,9 @@ namespace Template10Test.ViewModels
             }
         }
 
-        private ObservableCollection<Product> _products;
+        private List<FridgeProduct> _products;
 
-        public ObservableCollection<Product> Products
+        public List<FridgeProduct> Products
         {
             get { return _products; }
             set {
@@ -69,17 +53,13 @@ namespace Template10Test.ViewModels
 
         private void OnDeleteSelectedProduct(object obj)
         {
-            var product = SelectedProduct;
-            Debug.WriteLine($"deleted{SelectedProduct.Name}");
-            Products.Remove(product);
-//            List<string> temp = (settings.Values["streams"] as Array).OfType<string>().ToList();
-//            temp.Remove(streamer.Name);
-//            if (temp.Any())
-//            {
-//                settings.Values["streams"] = temp.ToArray();
-//            }
-//            else
-//                settings.Values["streams"] = "";
+            using (var db = new RecipeContext())
+            {
+                var product = SelectedProduct;
+                db.FridgeProducts.Remove(product);
+                db.SaveChanges();
+                Products = db.FridgeProducts.ToList();
+            }
         }
 
         private bool CanDeleteSelectedProduct(object obj)
@@ -90,33 +70,28 @@ namespace Template10Test.ViewModels
 
         public async void ClickCommand(object sender, object parameter)
         {
-            var arg = parameter as Windows.UI.Xaml.Controls.ItemClickEventArgs;
-            var item = arg.ClickedItem;
-            var uri = new Uri(item as string);
-            var success = await Windows.System.Launcher.LaunchUriAsync(uri);
-            if (success)
-            {
-                // URI launched
-            }
-            else
-            {
-                // URI launch failed
-            }
+//            var arg = parameter as Windows.UI.Xaml.Controls.ItemClickEventArgs;
+//            var item = arg.ClickedItem;
+//            var uri = new Uri(item as string);
+//            var success = await Windows.System.Launcher.LaunchUriAsync(uri);
+//            if (success)
+//            {
+//                // URI launched
+//            }
+//            else
+//            {
+//                // URI launch failed
+//            }
         }
 
         #region Navigations
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            Value = (suspensionState.ContainsKey(nameof(Value))) ? suspensionState[nameof(Value)]?.ToString() : parameter?.ToString();
             await Task.CompletedTask;
         }
 
         public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
         {
-            if (suspending)
-            {
-                suspensionState[nameof(Value)] = Value;
-            }
             await Task.CompletedTask;
         }
 

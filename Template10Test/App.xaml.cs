@@ -5,6 +5,14 @@ using Windows.UI.Xaml.Data;
 using Template10.Controls;
 using Template10Test.Services.SettingsServices;
 using Template10Test.Views;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.EntityFrameworkCore;
+using Template10Test.Models.Fridge;
+
 
 namespace Template10Test
 {
@@ -18,6 +26,11 @@ namespace Template10Test
         {
             InitializeComponent();
             SplashFactory = (e) => new Splash(e);
+
+            using (var db = new RecipeContext())
+            {
+                db.Database.Migrate();
+            }
 
             #region App settings
 

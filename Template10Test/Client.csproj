@@ -101,72 +101,29 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Build.cs" />
-    <Compile Include="Models\Data.cs" />
-    <Compile Include="Models\Channel\Links.cs" />
+    <Compile Include="Migrations\20170317221635_FirstMigration.cs" />
+    <Compile Include="Migrations\20170317221635_FirstMigration.designer.cs">
+      <DependentUpon>20170317221635_FirstMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\RecipeContextModelSnapshot.cs" />
+    <Compile Include="Models\Fridge\Context.cs" />
+    <Compile Include="Models\Fridge\FridgeProduct.cs" />
     <Compile Include="Models\Fridge\Ingredient.cs" />
     <Compile Include="Models\Fridge\Recipe.cs" />
-    <Compile Include="Models\LoginManager.cs" />
-    <Compile Include="Models\Channel\RootObject.cs" />
-    <Compile Include="Models\Channel\Streamer.cs" />
     <Compile Include="Models\Fridge\Product.cs" />
-    <Compile Include="Models\Region.cs" />
-    <Compile Include="Models\Riot\MatchById\Ban.cs" />
-    <Compile Include="Models\Riot\MatchById\CreepsPerMinDeltas.cs" />
-    <Compile Include="Models\Riot\MatchById\CsDiffPerMinDeltas.cs" />
-    <Compile Include="Models\Riot\MatchById\DamageTakenDiffPerMinDeltas.cs" />
-    <Compile Include="Models\Riot\MatchById\DamageTakenPerMinDeltas.cs" />
-    <Compile Include="Models\Riot\MatchById\GoldPerMinDeltas.cs" />
-    <Compile Include="Models\Riot\MatchById\Mastery.cs" />
-    <Compile Include="Models\Riot\MatchById\Participant.cs" />
-    <Compile Include="Models\Riot\MatchById\ParticipantIdentity.cs" />
-    <Compile Include="Models\Riot\MatchById\Player.cs" />
-    <Compile Include="Models\Riot\MatchById\RootObject.cs" />
-    <Compile Include="Models\Riot\MatchById\Rune.cs" />
-    <Compile Include="Models\Riot\MatchById\Stats.cs" />
-    <Compile Include="Models\Riot\MatchById\Team.cs" />
-    <Compile Include="Models\Riot\MatchById\Timeline.cs" />
-    <Compile Include="Models\Riot\MatchById\XpDiffPerMinDeltas.cs" />
-    <Compile Include="Models\Riot\MatchById\XpPerMinDeltas.cs" />
-    <Compile Include="Models\Riot\MatchListBySummonerId\Match.cs" />
-    <Compile Include="Models\Riot\MatchListBySummonerId\RootObject.cs" />
-    <Compile Include="Models\Riot\SummonerByName\RootObject.cs" />
-    <Compile Include="Models\Riot\SummonerByName\Summoner.cs" />
-    <Compile Include="Models\TwitchApiClient.cs" />
-    <Compile Include="Models\Users\Channel.cs" />
-    <Compile Include="Models\Users\Follow.cs" />
-    <Compile Include="Models\Users\RootObject.cs" />
-    <Compile Include="Models\User\Notifications.cs" />
-    <Compile Include="Models\User\RootObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
-    <Compile Include="ViewModels\BuildsPageViewModel.cs" />
     <Compile Include="ViewModels\FridgeContentPageViewModel.cs" />
-    <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\DetailPageViewModel.cs" />
     <Compile Include="ViewModels\ProductsPageViewModel.cs" />
-    <Compile Include="ViewModels\RecipePageViewModel.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
-    <Compile Include="Views\BuildsPage.xaml.cs">
-      <DependentUpon>BuildsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Busy.xaml.cs">
       <DependentUpon>Busy.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DetailPage.xaml.cs">
-      <DependentUpon>DetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FridgeContentPage.xaml.cs">
       <DependentUpon>FridgeContentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ProductsPage.xaml.cs">
       <DependentUpon>ProductsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RecipePage.xaml.cs">
-      <DependentUpon>RecipePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -206,35 +163,15 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\BuildsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Busy.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DetailPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FridgeContentPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoginPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\ProductsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RecipePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,12 +188,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Tasks\Tasks.csproj">
-      <Project>{92d2a0a2-04c2-4369-8a68-cb33893a50f8}</Project>
-      <Name>Tasks</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

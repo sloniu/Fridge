@@ -39,19 +39,6 @@
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
 
-            <!--  recipes button  -->
-            <Controls:HamburgerButtonInfo x:Name="RecipesButton" PageParameter="0"
-                                          PageType="views:RecipePage">
-                <Controls:HamburgerButtonInfo.NavigationTransitionInfo>
-                    <SuppressNavigationTransitionInfo />
-                </Controls:HamburgerButtonInfo.NavigationTransitionInfo>
-                <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Width="48" Height="48"
-                                Symbol="Setting" />
-                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
-                               Text="Recipes" />
-                </StackPanel>
-            </Controls:HamburgerButtonInfo>
         </Controls:HamburgerMenu.PrimaryButtons>
 
         <Controls:HamburgerMenu.SecondaryButtons>

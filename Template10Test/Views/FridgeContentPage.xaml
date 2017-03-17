@@ -62,7 +62,7 @@
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <StackPanel RightTapped="UIElement_OnRightTapped">
+                        <StackPanel RightTapped="UIElement_OnRightTapped" Width="100" Height="100">
                             <TextBlock x:Name="asdf" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
                             <Interactivity:Interaction.Behaviors>
                                 <Core:EventTriggerBehavior EventName="RightTapped">
@@ -83,9 +83,6 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <StackPanel RelativePanel.Below="FridgeContent" Margin="5">
-            <TextBlock Text="Nadchodzące zakupy"></TextBlock>
-        </StackPanel>
     </RelativePanel>
 </Page>
 

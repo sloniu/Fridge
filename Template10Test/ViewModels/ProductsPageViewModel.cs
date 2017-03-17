@@ -16,30 +16,15 @@ namespace Template10Test.ViewModels
     {
         public ProductsPageViewModel()
         {
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-            {
-                Value = "Designtime value";
-            }
-
             DeleteSelectedProduct = new DelegateCommand<object>(OnDeleteSelectedProduct, CanDeleteSelectedProduct);
             AddSelectedProduct = new DelegateCommand<object>(OnAddSelectedProduct, CanAddSelectedProduct);
 
-            Products = new ObservableCollection<Product>()
+            using (var db = new RecipeContext())
             {
-                new Product() { Name = "Mleko" },
-                new Product() { Name = "Pomidor" },
-                new Product() { Name = "Mas³o" },
-                new Product() { Name = "Ser ¿ó³ty" },
-            };
+                Products = db.Products.ToList();
+            }
         }
 
-        string _Value = "Gas";
-
-        public string Value
-        {
-            get { return _Value; }
-            set { Set(ref _Value, value); }
-        }
 
         private Product _selectedProduct;
 
@@ -53,9 +38,9 @@ namespace Template10Test.ViewModels
             }
         }
 
-        private ObservableCollection<Product> _products;
+        private List<Product> _products;
 
-        public ObservableCollection<Product> Products
+        public List<Product> Products
         {
             get { return _products; }
             set
@@ -83,61 +68,32 @@ namespace Template10Test.ViewModels
 
         public void AddProductButton()
         {
-
-            var obj = new Product()
+            using (var db = new RecipeContext())
             {
-                Name = $"{AddProduct} - {AddProductAmount}",
-                Amount = AddProductAmount
-            };
-            Products.Add(obj);
+                var product = new Product()
+                {
+                    Name = $"{AddProduct} - {AddProductAmount}",
+                    Size = AddProductAmount
+                };
+                db.Products.Add(product);
+                db.SaveChanges();
+                Debug.WriteLine(db.Products.FirstOrDefault(p => p.Name == product.Name));
+                Products = db.Products.ToList();
+            }
 
-            //            try
-            //            {
-            //                if (IsLoading) return;
-            //                using (var w = new HttpClient())
-            //                {
-            //                    var json = w.GetStringAsync("https://api.twitch.tv/kraken/channels/" + AddStreamer + "?client_id=4hz5hgythniudwl0frrequyu6wxbv02").Result;
-            //                    var r = JsonConvert.DeserializeObject<RootObject>(json);
-            //                    var temp = (settings.Values["streams"] as Array).OfType<string>().ToList();
-            //                    if (temp.Contains(r.name.ToString())) return;
-            //                    var obj = new Streamer()
-            //                    {
-            //                        DisplayName = r.display_name.ToString(),
-            //                        Name = r.name.ToString(),
-            //                        Logo = (string)r.logo,
-            //                        Link = r.url
-            //                    };
-            //                    Streamers.Add(obj);
-            //
-            //                    temp.Add(AddStreamer);
-            //                    //Data.Streams = temp.ToArray();
-            //                    settings.Values["streams"] = temp.ToArray();
-            //                    settings.Values[AddStreamer + "previous"] = "Offline";
-            //                    settings.Values[AddStreamer + "current"] = "Offline";
-            //                    settings.Values[AddStreamer + "changed"] = false;
-            //                    Debug.WriteLine("\nstreamer added\n");
-            //                    SortStreamers();
-            //                }
-            //            }
-            //            catch (Exception)
-            //            {
-            //                await new MessageDialog("Streamer " + AddStreamer + " not found.").ShowAsync();
-            //            }
-            //            finally
-            //            {
-            //                IsLoading = false;
-            //            }
         }
-
-        //        public bool IsLoading { get; set; } = false;
 
         public ICommand DeleteSelectedProduct { get; set; }
 
         private void OnDeleteSelectedProduct(object obj)
         {
-            var product = SelectedProduct;
-            Debug.WriteLine($"Deleted {SelectedProduct.Name}");
-            Products.Remove(product);
+            using (var db = new RecipeContext())
+            {
+                var product = SelectedProduct;
+                db.Products.Remove(product);
+                db.SaveChanges();
+                Products = db.Products.ToList();
+            }
         }
 
         private bool CanDeleteSelectedProduct(object obj)
@@ -149,10 +105,14 @@ namespace Template10Test.ViewModels
 
         private void OnAddSelectedProduct(object obj)
         {
-            var product = SelectedProduct;
-            Debug.WriteLine($"Added {SelectedProduct.Name}");
-            //TODO: dodawanie do LODÓWKI a nie produktów
-            Products.Add(product);
+            using (var db = new RecipeContext())
+            {
+                var product = SelectedProduct;
+                var updatedProduct = db.Products.FirstOrDefault(p => p.Name == product.Name);
+                if (updatedProduct == null) return;
+                db.FridgeProducts.Add(new FridgeProduct() { Name = updatedProduct.Name, Size = updatedProduct.Size });
+                db.SaveChanges();
+            }
         }
 
         private bool CanAddSelectedProduct(object obj)
@@ -163,33 +123,29 @@ namespace Template10Test.ViewModels
 
         public async void ClickCommand(object sender, object parameter)
         {
-            var arg = parameter as Windows.UI.Xaml.Controls.ItemClickEventArgs;
-            var item = arg.ClickedItem;
-            var uri = new Uri(item as string);
-            var success = await Windows.System.Launcher.LaunchUriAsync(uri);
-            if (success)
-            {
-                // URI launched
-            }
-            else
-            {
-                // URI launch failed
-            }
+//            var arg = parameter as Windows.UI.Xaml.Controls.ItemClickEventArgs;
+//            var item = arg.ClickedItem;
+//            var uri = new Uri(item as string);
+//            var success = await Windows.System.Launcher.LaunchUriAsync(uri);
+//            if (success)
+//            {
+//                // URI launched
+//            }
+//            else
+//            {
+//                // URI launch failed
+//            }
         }
 
         #region Navigations
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            Value = (suspensionState.ContainsKey(nameof(Value))) ? suspensionState[nameof(Value)]?.ToString() : parameter?.ToString();
             await Task.CompletedTask;
         }
 
         public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
         {
-            if (suspending)
-            {
-                suspensionState[nameof(Value)] = Value;
-            }
+ 
             await Task.CompletedTask;
         }
 
